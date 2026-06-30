@@ -101,10 +101,10 @@ code{font-size:12px;background:var(--bg);border:1px solid var(--b);padding:2px 6
 </head>
 <body>
 <nav class="nav">
-  <div class="nav-brand">🌾 KK Chăn Nuôi</div>
+  <div class="nav-brand" onclick="brandTap()" style="cursor:pointer">🌾 KK Chăn Nuôi</div>
   <div class="nav-tab on" onclick="V('form',this)">📝 Kê khai</div>
   <div class="nav-tab" onclick="V('dash',this)">📊 Tổng hợp</div>
-  <div class="nav-tab" onclick="V('setup',this)">⚙️ Cài đặt</div>
+  <div class="nav-tab" id="tab-setup" onclick="V('setup',this)" style="display:none">⚙️ Cài đặt</div>
 </nav>
 <div id="sync-banner"></div>
 
@@ -515,8 +515,9 @@ code{font-size:12px;background:var(--bg);border:1px solid var(--b);padding:2px 6
       <div class="dot gray" id="cdot"></div>
       <span id="ctxt">Chưa kết nối Google Sheets</span>
     </div>
-    <div class="f"><label>Script Web App URL <span class="req">*</span></label>
-      <input id="cfg-url" placeholder="https://script.google.com/macros/s/...">
+    <div class="f"><label>Script Web App URL <span class="req">*</span> 🔒</label>
+      <input id="cfg-url" readonly style="background:#f1f3f1;color:#777" placeholder="https://script.google.com/macros/s/...">
+      <div style="font-size:11px;color:var(--t3);margin-top:4px">🔒 Đã khóa để bảo vệ kết nối. Không cần và không nên thay đổi.</div>
     </div>
     <div style="display:flex;gap:8px">
       <button class="btn primary" style="flex:none;padding:9px 18px;font-size:13px" onclick="saveCfg()">Lưu cài đặt</button>
@@ -618,6 +619,23 @@ function fillPeriods(){
 }
 function E(id){return document.getElementById(id);}
 function g(id){const el=document.getElementById(id);return el&&typeof el.value!=='undefined'?(el.value||'').trim():'';}
+
+/* ====== KHÓA CÀI ĐẶT — chỉ quản trị viên mở được bằng mã PIN ====== */
+const ADMIN_PIN='79009675';
+let adminOn=false, brandTaps=0, brandTimer=null;
+function brandTap(){
+  brandTaps++;
+  clearTimeout(brandTimer);
+  brandTimer=setTimeout(function(){brandTaps=0;},1500);
+  if(brandTaps>=3){brandTaps=0;unlockAdmin();}
+}
+function unlockAdmin(){
+  if(adminOn){V('setup',E('tab-setup'));return;}
+  const p=prompt('🔒 Nhập mã PIN quản trị để mở phần Cài đặt:');
+  if(p===null)return;
+  if(p===ADMIN_PIN){adminOn=true;E('tab-setup').style.display='block';V('setup',E('tab-setup'));}
+  else alert('❌ Mã PIN không đúng. Phần Cài đặt chỉ dành cho cán bộ quản trị.');
+}
 function saveRecs(){localStorage.setItem('kkRecs',JSON.stringify(recs));}
 
 /* ====== JSONP: đọc dữ liệu qua mạng (vượt CORS của Apps Script) ====== */
@@ -848,6 +866,7 @@ function openGoogleMaps(){
 
 /* ====== KHỞI ĐỘNG ====== */
 fillPeriods();
+if(location.hash==='#admin') unlockAdmin();
 E('ngay').value=new Date().toISOString().split('T')[0];
 render();
 updatePending();
