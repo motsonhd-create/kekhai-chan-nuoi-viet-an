@@ -103,7 +103,7 @@ code{font-size:12px;background:var(--bg);border:1px solid var(--b);padding:2px 6
 <nav class="nav">
   <div class="nav-brand" onclick="brandTap()" style="cursor:pointer">🌾 KK Chăn Nuôi</div>
   <div class="nav-tab on" onclick="V('form',this)">📝 Kê khai</div>
-  <div class="nav-tab" onclick="V('dash',this)">📊 Tổng hợp</div>
+  <div class="nav-tab" id="tab-dash" onclick="V('dash',this)" style="display:none">📊 Tổng hợp</div>
   <div class="nav-tab" id="tab-setup" onclick="V('setup',this)" style="display:none">⚙️ Cài đặt</div>
 </nav>
 <div id="sync-banner"></div>
@@ -460,7 +460,7 @@ code{font-size:12px;background:var(--bg);border:1px solid var(--b);padding:2px 6
     <button onclick="window.print()" style="width:100%;padding:12px;background:var(--gl);color:var(--gd);border:1px solid var(--gm);border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:10px">🖨️ In phiếu xác nhận (PDF)</button>
     <div class="btn-row">
       <button class="btn" onclick="resetForm()">+ Kê khai hộ mới</button>
-      <button class="btn primary" onclick="V('dash',document.querySelectorAll('.nav-tab')[1])">Xem tổng hợp →</button>
+      <button class="btn primary" onclick="unlockAdmin()">🔒 Xem tổng hợp (cán bộ)</button>
     </div>
   </div>
 </div>
@@ -630,10 +630,10 @@ function brandTap(){
   if(brandTaps>=3){brandTaps=0;unlockAdmin();}
 }
 function unlockAdmin(){
-  if(adminOn){V('setup',E('tab-setup'));return;}
+  if(adminOn){V('dash',E('tab-dash'));return;}
   const p=prompt('🔒 Nhập mã PIN quản trị để mở phần Cài đặt:');
   if(p===null)return;
-  if(p===ADMIN_PIN){adminOn=true;E('tab-setup').style.display='block';V('setup',E('tab-setup'));}
+  if(p===ADMIN_PIN){adminOn=true;E('tab-dash').style.display='block';E('tab-setup').style.display='block';V('dash',E('tab-dash'));}
   else alert('❌ Mã PIN không đúng. Phần Cài đặt chỉ dành cho cán bộ quản trị.');
 }
 function saveRecs(){localStorage.setItem('kkRecs',JSON.stringify(recs));}
