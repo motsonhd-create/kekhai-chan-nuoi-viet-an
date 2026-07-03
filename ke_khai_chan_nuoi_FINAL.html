@@ -614,7 +614,7 @@ const TOTAL=5;
 const PGNAMES=['','Thông tin chủ hộ','Loại vật nuôi','Chuồng trại & chất thải','Phòng dịch & sản xuất','Xác nhận & nộp phiếu'];
 const ANAMES={lon:'Lợn',ga:'Gà',vit:'Vịt/Ngan',trau:'Trâu',bo:'Bò',de:'Dê/Cừu',tho:'Thỏ',khac:'Thủy sản/Khác'};
 let cfg=JSON.parse(localStorage.getItem('kkCfg')||'{"url":"https://script.google.com/macros/s/AKfycbwA1Rv4szDxYSf9gB1dD9f7v2aSWpXlKcphmuGURUWW3atlaIKJcrYW3EFJAsR7kAXLmA/exec"}');
-if(!cfg.url||cfg.url.indexOf('AKfycbzQ0')!==-1){cfg.url='https://script.google.com/macros/s/AKfycbwA1Rv4szDxYSf9gB1dD9f7v2aSWpXlKcphmuGURUWW3atlaIKJcrYW3EFJAsR7kAXLmA/exec';localStorage.setItem('kkCfg',JSON.stringify(cfg));}
+if(cfg.url!=='https://script.google.com/macros/s/AKfycbwA1Rv4szDxYSf9gB1dD9f7v2aSWpXlKcphmuGURUWW3atlaIKJcrYW3EFJAsR7kAXLmA/exec'){cfg.url='https://script.google.com/macros/s/AKfycbwA1Rv4szDxYSf9gB1dD9f7v2aSWpXlKcphmuGURUWW3atlaIKJcrYW3EFJAsR7kAXLmA/exec';localStorage.setItem('kkCfg',JSON.stringify(cfg));}
 recs=JSON.parse(localStorage.getItem('kkRecs')||'[]');
 
 const ADMIN_PW='79009675';
@@ -653,8 +653,8 @@ function render(){
   document.getElementById('prog').style.width=(pg/TOTAL*100)+'%';
   document.getElementById('pg-name').textContent=PGNAMES[pg];
   document.getElementById('pg-num').textContent=pg+' / '+TOTAL;
-  g('btn-back').style.display=pg>1?'block':'none';
-  g('btn-next').textContent=pg===TOTAL?'✅ Nộp phiếu':'Tiếp theo →';
+  document.getElementById('btn-back').style.display=pg>1?'block':'none';
+  document.getElementById('btn-next').textContent=pg===TOTAL?'✅ Nộp phiếu':'Tiếp theo →';
   if(pg===TOTAL) buildSum();
 }
 function validate(p){
@@ -720,10 +720,11 @@ async function renderDash(){
   drawDash();
 }
 function drawDash(){
-  g('d-ho').textContent=allRecs.length;
-  g('d-lon').textContent=allRecs.reduce((s,r)=>s+(+r.lon||0),0).toLocaleString();
-  g('d-ga').textContent=allRecs.reduce((s,r)=>s+(+r.ga||0)+(+r.vit||0),0).toLocaleString();
-  g('d-bo').textContent=allRecs.reduce((s,r)=>s+(+r.trau||0)+(+r.bo||0),0).toLocaleString();
+  const E=id=>document.getElementById(id);
+  E('d-ho').textContent=allRecs.length;
+  E('d-lon').textContent=allRecs.reduce((s,r)=>s+(+r.lon||0),0).toLocaleString();
+  E('d-ga').textContent=allRecs.reduce((s,r)=>s+(+r.ga||0)+(+r.vit||0),0).toLocaleString();
+  E('d-bo').textContent=allRecs.reduce((s,r)=>s+(+r.trau||0)+(+r.bo||0),0).toLocaleString();
   renderT();
 }
 function renderT(){
@@ -740,10 +741,10 @@ function exportCSV(){
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='KK_ChanNuoi_'+new Date().toISOString().slice(0,10)+'.csv';a.click();
 }
 function loadCfg(){
-  g('cfg-url').value=cfg.url||'';
+  document.getElementById('cfg-url').value=cfg.url||'';
   updateConn();
   const t=JSON.parse(localStorage.getItem('kkThon')||'[]');
-  if(t.length) g('cfg-thon').value=t.join('\n');
+  if(t.length) document.getElementById('cfg-thon').value=t.join('\n');
   // QR
   const qa=document.getElementById('qr-area');
   qa.innerHTML='';
