@@ -81,7 +81,6 @@ td{padding:9px 10px;border-bottom:1px solid var(--b)}
 tr:last-child td{border:none}
 tr:hover td{background:var(--bg)}
 .badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;background:var(--gl);color:var(--gd)}
-.badge.wait{background:var(--am2);color:var(--am)}
 .search-row{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
 .search-row input,.search-row select{padding:8px 10px;font-size:13px;border:1px solid var(--b2);border-radius:8px;background:#fff;outline:none}
 .search-row input{flex:1;min-width:120px}
@@ -96,17 +95,15 @@ code{font-size:12px;background:var(--bg);border:1px solid var(--b);padding:2px 6
 .copy-btn{background:var(--g);color:#fff;border:none;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;margin-top:6px}
 .period-badge{display:inline-flex;align-items:center;gap:6px;background:var(--am2);border:1px solid var(--am);border-radius:8px;padding:6px 12px;font-size:13px;font-weight:700;color:var(--am)}
 .qr-wrap{text-align:center;padding:20px;background:var(--gl);border-radius:12px;border:1px solid var(--gm)}
-#sync-banner{display:none;background:var(--am2);color:var(--am);font-size:13px;font-weight:600;text-align:center;padding:8px 14px;border-bottom:1px solid #FAC775}
 </style>
 </head>
 <body>
 <nav class="nav">
-  <div class="nav-brand" onclick="brandTap()" style="cursor:pointer">🌾 KK Chăn Nuôi</div>
+  <div class="nav-brand">🌾 KK Chăn Nuôi</div>
   <div class="nav-tab on" onclick="V('form',this)">📝 Kê khai</div>
-  <div class="nav-tab" id="tab-dash" onclick="V('dash',this)" style="display:none">📊 Tổng hợp</div>
-  <div class="nav-tab" id="tab-setup" onclick="V('setup',this)" style="display:none">⚙️ Cài đặt</div>
+  <div class="nav-tab" onclick="V('dash',this)">📊 Tổng hợp</div>
+  <div class="nav-tab" onclick="V('setup',this)">⚙️ Cài đặt</div>
 </nav>
-<div id="sync-banner"></div>
 
 <!-- ====== FORM ====== -->
 <div class="view on" id="view-form">
@@ -137,6 +134,11 @@ code{font-size:12px;background:var(--bg);border:1px solid var(--b);padding:2px 6
             <label>Kỳ kê khai <span class="req">*</span></label>
             <select id="ky">
               <option value="">-- Chọn kỳ --</option>
+              <option value="6T2024">6 tháng đầu năm 2024 (tháng 6/2024)</option>
+              <option value="CN2024">Cuối năm 2024 (tháng 12/2024)</option>
+              <option value="6T2025">6 tháng đầu năm 2025 (tháng 6/2025)</option>
+              <option value="CN2025">Cuối năm 2025 (tháng 12/2025)</option>
+              <option value="6T2026">6 tháng đầu năm 2026 (tháng 6/2026)</option>
             </select>
           </div>
           <div class="f">
@@ -162,7 +164,7 @@ code{font-size:12px;background:var(--bg);border:1px solid var(--b);padding:2px 6
       <div class="card">
         <div class="card-head">📍 Địa chỉ cơ sở chăn nuôi</div>
         <div class="r2">
-          <div class="f"><label>Thôn <span class="req">*</span></label>
+          <div class="f"><label>Thôn / Xóm / Bản <span class="req">*</span></label>
             <select id="thon">
               <option value="">-- Chọn thôn --</option>
               <option>Thôn An Cường</option><option>Thôn Phú Bình</option>
@@ -231,17 +233,17 @@ code{font-size:12px;background:var(--bg);border:1px solid var(--b);padding:2px 6
       </div>
     </div>
 
-    <!-- PAGE 2: Loại vật nuôi theo Thông tư 23 -->
+    <!-- PAGE 2: Loại vật nuôi -->
     <div class="pg" id="p2">
       <div class="info-box">
-        ℹ️ Theo <strong>Thông tư 23/2019/TT-BNNPTNT</strong>: Chọn loại vật nuôi đủ ngưỡng phải kê khai. Nhấn vào ô để chọn và nhập số lượng.
+        ℹ️ <strong>Tất cả hộ chăn nuôi đều kê khai — dù chỉ nuôi 1 con.</strong> Việc kê khai đầy đủ giúp xã phòng chống dịch bệnh và là căn cứ hỗ trợ thiệt hại khi có dịch, thiên tai. Nhấn vào ô để chọn và nhập số lượng.
       </div>
       <div class="card">
         <div class="card-head">🐾 Loại vật nuôi &amp; số lượng <span class="req">*</span></div>
         <div class="animal-grid">
           <div class="ac" id="ac-lon" onclick="tog('lon',this)">
             <span class="em">🐷</span><div class="nm">Lợn</div>
-            <div class="min">Ngưỡng: ≥5 con lợn thịt, ≥1 nái/đực</div>
+            <div class="min">Kê khai từ 1 con trở lên</div>
             <div class="adet" id="ad-lon">
               <div class="cnt"><label>Tổng số con:</label><input type="number" id="n-lon" min="0" placeholder="0" inputmode="numeric" onclick="ev(event)"></div>
               <div class="cnt"><label>Trong đó lợn nái:</label><input type="number" id="nai-lon" min="0" placeholder="0" inputmode="numeric" onclick="ev(event)"></div>
@@ -258,7 +260,7 @@ code{font-size:12px;background:var(--bg);border:1px solid var(--b);padding:2px 6
           </div>
           <div class="ac" id="ac-ga" onclick="tog('ga',this)">
             <span class="em">🐓</span><div class="nm">Gà</div>
-            <div class="min">Ngưỡng: ≥50 con</div>
+            <div class="min">Kê khai từ 1 con trở lên</div>
             <div class="adet" id="ad-ga">
               <div class="cnt"><label>Tổng số con:</label><input type="number" id="n-ga" min="0" placeholder="0" inputmode="numeric" onclick="ev(event)"></div>
               <div class="cnt"><label>Gà mái đẻ:</label><input type="number" id="mai-ga" min="0" placeholder="0" inputmode="numeric" onclick="ev(event)"></div>
@@ -273,7 +275,7 @@ code{font-size:12px;background:var(--bg);border:1px solid var(--b);padding:2px 6
           </div>
           <div class="ac" id="ac-vit" onclick="tog('vit',this)">
             <span class="em">🦆</span><div class="nm">Vịt / Ngan / Ngỗng</div>
-            <div class="min">Ngưỡng: ≥50 con</div>
+            <div class="min">Kê khai từ 1 con trở lên</div>
             <div class="adet" id="ad-vit">
               <div class="cnt"><label>Tổng số con:</label><input type="number" id="n-vit" min="0" placeholder="0" inputmode="numeric" onclick="ev(event)"></div>
               <div class="cnt"><label>Vịt mái đẻ:</label><input type="number" id="mai-vit" min="0" placeholder="0" inputmode="numeric" onclick="ev(event)"></div>
@@ -281,7 +283,7 @@ code{font-size:12px;background:var(--bg);border:1px solid var(--b);padding:2px 6
           </div>
           <div class="ac" id="ac-trau" onclick="tog('trau',this)">
             <span class="em">🐃</span><div class="nm">Trâu</div>
-            <div class="min">Ngưỡng: ≥5 con</div>
+            <div class="min">Kê khai từ 1 con trở lên</div>
             <div class="adet" id="ad-trau">
               <div class="cnt"><label>Tổng số con:</label><input type="number" id="n-trau" min="0" placeholder="0" inputmode="numeric" onclick="ev(event)"></div>
               <div class="cnt"><label>Trâu cái sinh sản:</label><input type="number" id="cai-trau" min="0" placeholder="0" inputmode="numeric" onclick="ev(event)"></div>
@@ -289,7 +291,7 @@ code{font-size:12px;background:var(--bg);border:1px solid var(--b);padding:2px 6
           </div>
           <div class="ac" id="ac-bo" onclick="tog('bo',this)">
             <span class="em">🐄</span><div class="nm">Bò</div>
-            <div class="min">Ngưỡng: ≥5 con</div>
+            <div class="min">Kê khai từ 1 con trở lên</div>
             <div class="adet" id="ad-bo">
               <div class="cnt"><label>Tổng số con:</label><input type="number" id="n-bo" min="0" placeholder="0" inputmode="numeric" onclick="ev(event)"></div>
               <div class="cnt"><label>Bò cái sinh sản:</label><input type="number" id="cai-bo" min="0" placeholder="0" inputmode="numeric" onclick="ev(event)"></div>
@@ -302,7 +304,7 @@ code{font-size:12px;background:var(--bg);border:1px solid var(--b);padding:2px 6
           </div>
           <div class="ac" id="ac-de" onclick="tog('de',this)">
             <span class="em">🐐</span><div class="nm">Dê / Cừu</div>
-            <div class="min">Ngưỡng: ≥5 con</div>
+            <div class="min">Kê khai từ 1 con trở lên</div>
             <div class="adet" id="ad-de">
               <div class="cnt"><label>Tổng số con:</label><input type="number" id="n-de" min="0" placeholder="0" inputmode="numeric" onclick="ev(event)"></div>
               <div class="cnt"><label>Dê cái sinh sản:</label><input type="number" id="cai-de" min="0" placeholder="0" inputmode="numeric" onclick="ev(event)"></div>
@@ -310,14 +312,14 @@ code{font-size:12px;background:var(--bg);border:1px solid var(--b);padding:2px 6
           </div>
           <div class="ac" id="ac-tho" onclick="tog('tho',this)">
             <span class="em">🐇</span><div class="nm">Thỏ</div>
-            <div class="min">Ngưỡng: ≥100 con</div>
+            <div class="min">Kê khai từ 1 con trở lên</div>
             <div class="adet" id="ad-tho">
               <div class="cnt"><label>Tổng số con:</label><input type="number" id="n-tho" min="0" placeholder="0" inputmode="numeric" onclick="ev(event)"></div>
             </div>
           </div>
           <div class="ac" id="ac-khac" onclick="tog('khac',this)">
             <span class="em">🐟</span><div class="nm">Thủy sản / Khác</div>
-            <div class="min">Vật nuôi khác theo quy định</div>
+            <div class="min">Kê khai mọi số lượng</div>
             <div class="adet" id="ad-khac">
               <div class="f" style="margin:0"><label style="font-size:12px;color:var(--t3)">Ghi rõ loại:</label>
                 <input type="text" id="loai-khac" placeholder="VD: Cá trê, Ếch, Hươu..." onclick="ev(event)">
@@ -460,14 +462,13 @@ code{font-size:12px;background:var(--bg);border:1px solid var(--b);padding:2px 6
     <button onclick="window.print()" style="width:100%;padding:12px;background:var(--gl);color:var(--gd);border:1px solid var(--gm);border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:10px">🖨️ In phiếu xác nhận (PDF)</button>
     <div class="btn-row">
       <button class="btn" onclick="resetForm()">+ Kê khai hộ mới</button>
-      <button class="btn primary" onclick="unlockAdmin()">🔒 Xem tổng hợp (cán bộ)</button>
+      <button class="btn primary" onclick="V('dash',document.querySelectorAll('.nav-tab')[1])">Xem tổng hợp →</button>
     </div>
   </div>
 </div>
 
 <!-- ====== DASHBOARD ====== -->
 <div class="view" id="view-dash">
-  <div id="dash-status" style="font-size:12px;color:var(--t3);margin-bottom:10px"></div>
   <div class="stat-grid">
     <div class="stat accent"><div class="val" id="d-ho">0</div><div class="lbl">Hộ đã kê khai</div></div>
     <div class="stat"><div class="val" id="d-lon">0</div><div class="lbl">Con lợn</div></div>
@@ -490,6 +491,9 @@ code{font-size:12px;background:var(--bg);border:1px solid var(--b);padding:2px 6
       </select>
       <select id="s-ky" onchange="renderT()">
         <option value="">Tất cả kỳ</option>
+        <option value="6T2024">6T/2024</option><option value="CN2024">CN/2024</option>
+        <option value="6T2025">6T/2025</option><option value="CN2025">CN/2025</option>
+        <option value="6T2026">6T/2026</option>
       </select>
     </div>
     <div class="tbl-wrap">
@@ -515,9 +519,8 @@ code{font-size:12px;background:var(--bg);border:1px solid var(--b);padding:2px 6
       <div class="dot gray" id="cdot"></div>
       <span id="ctxt">Chưa kết nối Google Sheets</span>
     </div>
-    <div class="f"><label>Script Web App URL <span class="req">*</span> 🔒</label>
-      <input id="cfg-url" readonly style="background:#f1f3f1;color:#777" placeholder="https://script.google.com/macros/s/...">
-      <div style="font-size:11px;color:var(--t3);margin-top:4px">🔒 Đã khóa để bảo vệ kết nối. Không cần và không nên thay đổi.</div>
+    <div class="f"><label>Script Web App URL <span class="req">*</span></label>
+      <input id="cfg-url" placeholder="https://script.google.com/macros/s/...">
     </div>
     <div style="display:flex;gap:8px">
       <button class="btn primary" style="flex:none;padding:9px 18px;font-size:13px" onclick="saveCfg()">Lưu cài đặt</button>
@@ -540,9 +543,8 @@ code{font-size:12px;background:var(--bg);border:1px solid var(--b);padding:2px 6
     </div>
     <div class="step-box"><div class="step-n">3</div>
       <div class="step-c"><h4>Triển khai Web App</h4>
-        <p><strong>Triển khai → Quản lý các bản triển khai → ✏️ (Sửa) → Phiên bản: Phiên bản mới</strong><br>
-        Chọn: <code>Ai có quyền truy cập: Bất kỳ ai</code> → Triển khai → Cấp quyền.<br>
-        ⚠️ Sửa bản triển khai cũ để <strong>giữ nguyên URL</strong> (không tạo bản mới).</p>
+        <p><strong>Triển khai → Triển khai mới → Ứng dụng web</strong><br>
+        Chọn: <code>Ai có quyền truy cập: Mọi người</code> → Triển khai → Cấp quyền → Copy URL dán vào ô trên</p>
       </div>
     </div>
     <div class="step-box"><div class="step-n">4</div>
@@ -574,135 +576,44 @@ Thôn Mỹ Thạnh</textarea>
   </div>
 
   <div class="card qr-wrap">
-    <div class="card-head" style="justify-content:center">📱 Mã QR kê khai (cho người dân)</div>
-    <p style="font-size:13px;color:var(--t2);text-align:center;margin-bottom:12px">In mã QR này dán lên bảng thông báo thôn hoặc đăng Facebook để người dân quét và kê khai. (QR mở chính trang kê khai này.)</p>
+    <div class="card-head" style="justify-content:center">📱 Mã QR kê khai</div>
+    <p style="font-size:13px;color:var(--t2);text-align:center;margin-bottom:12px">In mã QR này dán lên bảng thông báo thôn hoặc đăng Facebook để người dân quét và kê khai</p>
     <div id="qr-area" style="display:flex;justify-content:center"></div>
-    <p id="qr-link" style="font-size:11px;color:var(--t3);text-align:center;margin-top:10px;word-break:break-all"></p>
+    <p style="font-size:12px;color:var(--t3);text-align:center;margin-top:10px">QR tự động cập nhật khi bạn nhập URL vào ô Script phía trên</p>
   </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
-/* ====== TRẠNG THÁI ====== */
-let pg=1, animals={}, recs=[], serverRecs=[];
+let pg=1, animals={}, recs=[];
 const TOTAL=5;
 const PGNAMES=['','Thông tin chủ hộ','Loại vật nuôi','Chuồng trại & chất thải','Phòng dịch & sản xuất','Xác nhận & nộp phiếu'];
 const ANAMES={lon:'Lợn',ga:'Gà',vit:'Vịt/Ngan',trau:'Trâu',bo:'Bò',de:'Dê/Cừu',tho:'Thỏ',khac:'Thủy sản/Khác'};
-
-/* URL Apps Script mặc định (KHÔNG đổi để giữ nguyên kết nối đã chia sẻ) */
-const DEFAULT_URL='https://script.google.com/macros/s/AKfycbwA1Rv4szDxYSf9gB1dD9f7v2aSWpXlKcphmuGURUWW3atlaIKJcrYW3EFJAsR7kAXLmA/exec';
-/* Link công khai của trang (dùng cho mã QR cho người dân). KHÔNG để link file:// trên máy. */
-const PUBLIC_URL='https://motsonhd-create.github.io/kekhai-chan-nuoi-viet-an/ke_khai_chan_nuoi_FINAL.html';
-let cfg=JSON.parse(localStorage.getItem('kkCfg')||'null')||{url:DEFAULT_URL};
-if(!cfg.url) cfg.url=DEFAULT_URL;
+let cfg=JSON.parse(localStorage.getItem('kkCfg')||'{"url":"https://script.google.com/macros/s/AKfycbzQ0XQzb-WZqUegpcnIGb8Sp-9vNP6ot7xaYfRK79bc1hJ_0VDBnBUPOmXNGa8QiuagRw/exec"}');
 recs=JSON.parse(localStorage.getItem('kkRecs')||'[]');
-recs.forEach(r=>{ if(typeof r.synced==='undefined') r.synced=false; });
 
-/* Danh sách kỳ kê khai: chỉ kỳ HIỆN TẠI và TƯƠNG LAI (tự cập nhật theo ngày) */
-function periodList(count){
-  const d=new Date();let y=d.getFullYear();let h=(d.getMonth()+1)<=6?1:2;
-  const out=[];
-  for(let i=0;i<count;i++){
-    out.push({val:(h===1?'6T':'CN')+y,
-      label:(h===1?('6 tháng đầu năm '+y+' (tháng 6/'+y+')'):('Cuối năm '+y+' (tháng 12/'+y+')')),
-      short:(h===1?'6T/':'CN/')+y});
-    if(h===1){h=2;}else{h=1;y++;}
-  }
-  return out;
-}
-function fillPeriods(){
-  const ps=periodList(5);
-  const ky=document.getElementById('ky');
-  if(ky){ky.innerHTML='<option value="">-- Chọn kỳ --</option>'+ps.map(p=>`<option value="${p.val}">${p.label}</option>`).join('');ky.value=ps[0].val;}
-  const sky=document.getElementById('s-ky');
-  if(sky){sky.innerHTML='<option value="">Tất cả kỳ</option>'+ps.map(p=>`<option value="${p.val}">${p.short}</option>`).join('');}
-}
-function E(id){return document.getElementById(id);}
-function g(id){const el=document.getElementById(id);return el&&typeof el.value!=='undefined'?(el.value||'').trim():'';}
-
-/* ====== KHÓA CÀI ĐẶT — chỉ quản trị viên mở được bằng mã PIN ====== */
-const ADMIN_PIN='79009675';
-let adminOn=false, brandTaps=0, brandTimer=null;
-function brandTap(){
-  brandTaps++;
-  clearTimeout(brandTimer);
-  brandTimer=setTimeout(function(){brandTaps=0;},1500);
-  if(brandTaps>=3){brandTaps=0;unlockAdmin();}
-}
-function unlockAdmin(){
-  if(adminOn){V('dash',E('tab-dash'));return;}
-  const p=prompt('🔒 Nhập mã PIN quản trị để mở phần Cài đặt:');
-  if(p===null)return;
-  if(p===ADMIN_PIN){adminOn=true;E('tab-dash').style.display='block';E('tab-setup').style.display='block';V('dash',E('tab-dash'));}
-  else alert('❌ Mã PIN không đúng. Phần Cài đặt chỉ dành cho cán bộ quản trị.');
-}
-function saveRecs(){localStorage.setItem('kkRecs',JSON.stringify(recs));}
-
-/* ====== JSONP: đọc dữ liệu qua mạng (vượt CORS của Apps Script) ====== */
-function jsonp(url){
-  return new Promise(resolve=>{
-    const cb='_kk'+Math.random().toString(36).slice(2);
-    const s=document.createElement('script');
-    const timer=setTimeout(()=>{cleanup();resolve(null);},15000);
-    function cleanup(){clearTimeout(timer);try{delete window[cb];}catch(e){}if(s.parentNode)s.parentNode.removeChild(s);}
-    window[cb]=function(data){cleanup();resolve(data);};
-    s.onerror=function(){cleanup();resolve(null);};
-    s.src=url+(url.indexOf('?')>-1?'&':'?')+'callback='+cb;
-    document.body.appendChild(s);
-  });
-}
-
-/* ====== ĐỒNG BỘ ====== */
-async function pushRec(rec){
-  if(!cfg.url) return false;
-  try{
-    await fetch(cfg.url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(rec)});
-  }catch(e){}
-  // Xác minh THẬT bằng cách đọc lại từ Sheets
-  const res=await jsonp(cfg.url+'?ma='+encodeURIComponent(rec.ma));
-  if(res&&res.ok&&res.data&&res.data.length){
-    rec.synced=true; saveRecs(); updatePending();
-    return true;
-  }
-  return false;
-}
-async function syncPending(){
-  if(!cfg.url) return;
-  const pend=recs.filter(r=>!r.synced);
-  updatePending();
-  for(const r of pend){ await pushRec(r); }
-  updatePending();
-}
-function updatePending(){
-  const n=recs.filter(r=>!r.synced).length;
-  const b=E('sync-banner');
-  if(!b) return;
-  if(n>0){b.style.display='block';b.textContent='⏳ Có '+n+' phiếu chưa gửi lên hệ thống — đang tự động gửi lại, vui lòng giữ kết nối mạng...';}
-  else{b.style.display='none';}
-}
-
-/* ====== ĐIỀU HƯỚNG ====== */
 function V(id,el){
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('on'));
-  E('view-'+id).classList.add('on');
+  document.getElementById('view-'+id).classList.add('on');
   el.classList.add('on');
   if(id==='dash') renderDash();
   if(id==='setup') loadCfg();
 }
-function ev(e){e.stopPropagation();}
+function ev(e){e.stopPropagation()}
 function tog(k,el){
-  const d=E('ad-'+k);
+  const d=document.getElementById('ad-'+k);
   if(animals[k]){delete animals[k];el.classList.remove('on');d.classList.remove('on');}
   else{animals[k]=true;el.classList.add('on');d.classList.add('on');}
 }
+function g(id){return document.getElementById(id)?.value?.trim()||''}
 function render(){
-  for(let i=1;i<=TOTAL;i++) E('p'+i).classList.toggle('on',i===pg);
-  E('prog').style.width=(pg/TOTAL*100)+'%';
-  E('pg-name').textContent=PGNAMES[pg];
-  E('pg-num').textContent=pg+' / '+TOTAL;
-  E('btn-back').style.display=pg>1?'block':'none';
-  E('btn-next').textContent=pg===TOTAL?'✅ Nộp phiếu':'Tiếp theo →';
+  for(let i=1;i<=TOTAL;i++) document.getElementById('p'+i).classList.toggle('on',i===pg);
+  document.getElementById('prog').style.width=(pg/TOTAL*100)+'%';
+  document.getElementById('pg-name').textContent=PGNAMES[pg];
+  document.getElementById('pg-num').textContent=pg+' / '+TOTAL;
+  g('btn-back').style.display=pg>1?'block':'none';
+  g('btn-next').textContent=pg===TOTAL?'✅ Nộp phiếu':'Tiếp theo →';
   if(pg===TOTAL) buildSum();
 }
 function validate(p){
@@ -716,119 +627,82 @@ function goBack(){if(pg>1){pg--;render();}}
 function buildSum(){
   const rows=[
     ['Kỳ kê khai',g('ky')],['Ngày kê khai',g('ngay')],['Chủ hộ',g('ten')],['CCCD/CMND',g('cccd')],
-    ['SĐT',g('sdt')||'—'],['Năm sinh',g('ns')||'—'],['Thôn',g('thon')],
+    ['SĐT',g('sdt')||'—'],['Năm sinh',g('ns')||'—'],['Thôn/Xóm',g('thon')],
     ['Mô tả vị trí',g('dc')||'—'],
-    ['Toạ độ GPS',(g('lat')&&g('lng'))?(g('lat')+', '+g('lng')):'Chưa xác định'],
+    ['Toạ độ GPS',(document.getElementById('lat')?.value&&document.getElementById('lng')?.value)?(document.getElementById('lat').value+', '+document.getElementById('lng').value):'Chưa xác định'],
     ['---',''],
   ];
   Object.keys(animals).forEach(k=>{
-    const cnt=g('n-'+k)||'0';
+    const cnt=document.getElementById('n-'+k)?.value||'0';
     rows.push([ANAMES[k],cnt+' con']);
   });
   rows.push(['---',''],['Diện tích chuồng',(g('dien_tich')||'—')+' m²'],['Hình thức nuôi',g('ht')||'—'],['Xử lý chất thải',g('ct_ran')||'—'],['---',''],['Tiêm phòng vắc-xin',g('vx')||'—'],['Tình trạng dịch',g('db')||'—']);
-  E('sum-content').innerHTML=rows.map(r=>r[0]==='---'?'<div class="sep"></div>':`<div class="sum-row"><span class="sum-lbl">${r[0]}</span><span class="sum-val">${r[1]}</span></div>`).join('');
+  document.getElementById('sum-content').innerHTML=rows.map(r=>r[0]==='---'?'<div class="sep"></div>':`<div class="sum-row"><span class="sum-lbl">${r[0]}</span><span class="sum-val">${r[1]}</span></div>`).join('');
 }
 async function submit(){
   const code='CN'+Date.now().toString().slice(-7);
-  const vatNuoi=Object.keys(animals).map(k=>{const c=g('n-'+k)||'0';return ANAMES[k]+':'+c;}).join(', ');
-  const latV=g('lat'),lngV=g('lng');
-  const rec={ma:code,ky:g('ky'),ngay:g('ngay'),ten:g('ten'),cccd:g('cccd'),sdt:g('sdt'),ns:g('ns'),gt:g('gt'),thon:g('thon'),thua:g('thua'),dc:g('dc'),viDo:latV,kinhDo:lngV,gpsLink:latV&&lngV?`https://maps.google.com/?q=${latV},${lngV}`:'',vatNuoi,lon:g('n-lon')||'0',ga:g('n-ga')||'0',vit:g('n-vit')||'0',trau:g('n-trau')||'0',bo:g('n-bo')||'0',de:g('n-de')||'0',dienTich:g('dien_tich'),ht:g('ht'),nn:g('nn'),ctRan:g('ct_ran'),ctNuoc:g('ct_nuoc'),vx:g('vx'),loaiVx:g('loai_vx'),db:g('db'),ban:g('ban'),nhap:g('nhap'),ghichu:g('ghichu'),synced:false};
-  recs.push(rec);saveRecs();updatePending();
-  E('ma').textContent=code;
-  E('form-main').style.display='none';
-  E('form-ok').style.display='block';
-  E('ok-detail').innerHTML=[['Chủ hộ',rec.ten],['CCCD',rec.cccd],['Thôn',rec.thon],['Kỳ kê khai',rec.ky],['Vật nuôi',rec.vatNuoi],['Ngày kê khai',rec.ngay]].map(r=>`<div class="sum-row"><span class="sum-lbl">${r[0]}</span><span class="sum-val">${r[1]}</span></div>`).join('');
-  const st=E('send-status');
+  const vatNuoi=Object.keys(animals).map(k=>{const c=document.getElementById('n-'+k)?.value||'0';return ANAMES[k]+':'+c;}).join(', ');
+  const latV=document.getElementById('lat')?.value||'';
+  const lngV=document.getElementById('lng')?.value||'';
+  const rec={ma:code,ky:g('ky'),ngay:g('ngay'),ten:g('ten'),cccd:g('cccd'),sdt:g('sdt'),ns:g('ns'),gt:g('gt'),thon:g('thon'),thua:g('thua'),dc:g('dc'),viDo:latV,kinhDo:lngV,gpsLink:latV&&lngV?`https://maps.google.com/?q=${latV},${lngV}`:'',vatNuoi,lon:document.getElementById('n-lon')?.value||'0',ga:document.getElementById('n-ga')?.value||'0',vit:document.getElementById('n-vit')?.value||'0',trau:document.getElementById('n-trau')?.value||'0',bo:document.getElementById('n-bo')?.value||'0',de:document.getElementById('n-de')?.value||'0',dienTich:g('dien_tich'),ht:g('ht'),nn:g('nn'),ctRan:g('ct_ran'),ctNuoc:g('ct_nuoc'),vx:g('vx'),loaiVx:g('loai_vx'),db:g('db'),ban:g('ban'),nhap:g('nhap'),ghichu:g('ghichu')};
+  recs.push(rec);localStorage.setItem('kkRecs',JSON.stringify(recs));
+  document.getElementById('ma').textContent=code;
+  document.getElementById('form-main').style.display='none';
+  document.getElementById('form-ok').style.display='block';
+  const det=document.getElementById('ok-detail');
+  det.innerHTML=[['Chủ hộ',rec.ten],['CCCD',rec.cccd],['Thôn',rec.thon],['Kỳ kê khai',rec.ky],['Vật nuôi',rec.vatNuoi],['Ngày kê khai',rec.ngay]].map(r=>`<div class="sum-row"><span class="sum-lbl">${r[0]}</span><span class="sum-val">${r[1]}</span></div>`).join('');
   if(cfg.url){
-    st.textContent='⏳ Đang gửi lên Google Sheets của xã...';
-    const ok=await pushRec(rec);
-    st.textContent= ok
-      ? '✅ Đã gửi & XÁC NHẬN trên hệ thống của xã. Cảm ơn bạn!'
-      : '⚠️ Phiếu ĐÃ LƯU trên máy nhưng chưa xác nhận được trên hệ thống. Hệ thống sẽ TỰ ĐỘNG gửi lại khi có mạng/khi bạn mở lại link. Không cần kê khai lại.';
-  }else{st.textContent='💾 Lưu cục bộ — chưa cài đặt Google Sheets.';}
+    document.getElementById('send-status').textContent='⏳ Đang gửi lên Google Sheets...';
+    try{await fetch(cfg.url,{method:'POST',body:JSON.stringify(rec),headers:{'Content-Type':'application/json'},mode:'no-cors'});document.getElementById('send-status').textContent='✅ Đã lưu vào Google Sheets của xã';}
+    catch(e){document.getElementById('send-status').textContent='⚠️ Đã lưu cục bộ (kiểm tra mạng)';}
+  } else {document.getElementById('send-status').textContent='💾 Lưu cục bộ — chưa cài đặt Google Sheets';}
 }
-
-/* ====== DASHBOARD (liên thông – đọc dữ liệu chung) ====== */
-function allRecs(){
-  const map={};
-  serverRecs.forEach(r=>{if(r&&r.ma)map[r.ma]=Object.assign({},r,{_wait:false});});
-  recs.forEach(r=>{if(r&&r.ma&&!map[r.ma])map[r.ma]=Object.assign({},r,{_wait:!r.synced});});
-  return Object.values(map);
-}
-async function renderDash(){
-  renderStats();renderT();
-  const ds=E('dash-status');
-  if(cfg.url){
-    ds.textContent='⏳ Đang tải dữ liệu chung từ Google Sheets...';
-    const res=await jsonp(cfg.url);
-    if(res&&res.ok&&Array.isArray(res.data)){
-      serverRecs=res.data;
-      ds.textContent='✅ Đã đồng bộ '+res.data.length+' phiếu từ hệ thống (cập nhật '+new Date().toLocaleTimeString('vi-VN')+').';
-    }else{
-      ds.textContent='⚠️ Chưa đọc được dữ liệu chung từ Google Sheets — đang hiển thị dữ liệu trên máy này. (Kiểm tra Cài đặt: Web App phải triển khai quyền "Bất kỳ ai".)';
-    }
-  }else{ds.textContent='💾 Chưa cài đặt Google Sheets — chỉ hiển thị dữ liệu trên máy này.';}
-  renderStats();renderT();
-}
-function renderStats(){
-  const a=allRecs();
-  E('d-ho').textContent=a.length;
-  E('d-lon').textContent=a.reduce((s,r)=>s+(+r.lon||0),0).toLocaleString();
-  E('d-ga').textContent=a.reduce((s,r)=>s+(+r.ga||0)+(+r.vit||0),0).toLocaleString();
-  E('d-bo').textContent=a.reduce((s,r)=>s+(+r.trau||0)+(+r.bo||0),0).toLocaleString();
+function renderDash(){
+  g('d-ho').textContent=recs.length;
+  g('d-lon').textContent=recs.reduce((s,r)=>s+(+r.lon||0),0).toLocaleString();
+  g('d-ga').textContent=recs.reduce((s,r)=>s+(+r.ga||0)+(+r.vit||0),0).toLocaleString();
+  g('d-bo').textContent=recs.reduce((s,r)=>s+(+r.trau||0)+(+r.bo||0),0).toLocaleString();
+  renderT();
 }
 function renderT(){
   const q=g('s-q').toLowerCase(),thon=g('s-thon'),ky=g('s-ky');
-  const f=allRecs().filter(r=>(!q||(r.ten||'').toLowerCase().includes(q)||String(r.cccd||'').includes(q)||String(r.ma||'').includes(q))&&(!thon||r.thon===thon)&&(!ky||r.ky===ky));
-  E('tbl-empty').style.display=f.length?'none':'block';
-  E('tbl').innerHTML=f.map(r=>`<tr><td><strong>${r.ten||''}</strong><br><span style="font-size:11px;color:var(--t3)">${r.cccd||''}</span></td><td>${r.thon||''}</td><td style="font-size:12px">${r.ky||''}</td><td style="font-size:12px;max-width:140px">${r.vatNuoi||'—'}</td><td><span class="badge${r._wait?' wait':''}">${r.ma||''}</span>${r._wait?'<br><span style="font-size:10px;color:var(--am)">chờ gửi</span>':''}</td></tr>`).join('');
+  const f=recs.filter(r=>(!q||r.ten.toLowerCase().includes(q)||r.cccd.includes(q)||r.ma.includes(q))&&(!thon||r.thon===thon)&&(!ky||r.ky===ky));
+  document.getElementById('tbl-empty').style.display=f.length?'none':'block';
+  document.getElementById('tbl').innerHTML=f.map(r=>`<tr><td><strong>${r.ten}</strong><br><span style="font-size:11px;color:var(--t3)">${r.cccd}</span></td><td>${r.thon}</td><td style="font-size:12px">${r.ky}</td><td style="font-size:12px;max-width:140px">${r.vatNuoi||'—'}</td><td><span class="badge">${r.ma}</span></td></tr>`).join('');
 }
 function exportCSV(){
-  const data=allRecs();
-  if(!data.length) return alert('Chưa có dữ liệu');
+  if(!recs.length) return alert('Chưa có dữ liệu');
   const h=['Mã phiếu','Kỳ KK','Ngày KK','Họ tên','CCCD','SĐT','Năm sinh','Giới tính','Thôn','Số thửa','Mô tả vị trí','Vĩ độ (Lat)','Kinh độ (Lng)','Link Google Maps','Lợn (con)','Gà (con)','Vịt/Ngan','Trâu','Bò','Dê/Cừu','Vật nuôi tổng hợp','Diện tích chuồng (m²)','Hình thức','Nguồn nước','Chất thải rắn','Chất thải nước','Vắc-xin','Loại vắc-xin','Dịch bệnh','Số bán','Số nhập','Ghi chú'];
-  const rows=data.map(r=>[r.ma,r.ky,r.ngay,r.ten,r.cccd,r.sdt,r.ns,r.gt,r.thon,r.thua,r.dc,r.viDo||'',r.kinhDo||'',r.gpsLink||'',r.lon,r.ga,r.vit,r.trau,r.bo,r.de,r.vatNuoi,r.dienTich,r.ht,r.nn,r.ctRan,r.ctNuoc,r.vx,r.loaiVx,r.db,r.ban,r.nhap,r.ghichu].map(c=>`"${String(c==null?'':c).replace(/"/g,'""')}"`));
+  const rows=recs.map(r=>[r.ma,r.ky,r.ngay,r.ten,r.cccd,r.sdt,r.ns,r.gt,r.thon,r.thua,r.dc,r.viDo||'',r.kinhDo||'',r.gpsLink||'',r.lon,r.ga,r.vit,r.trau,r.bo,r.de,r.vatNuoi,r.dienTich,r.ht,r.nn,r.ctRan,r.ctNuoc,r.vx,r.loaiVx,r.db,r.ban,r.nhap,r.ghichu].map(c=>`"${(c||'').replace(/"/g,'""')}"`))
   const csv='﻿'+[h,...rows].map(r=>r.join(',')).join('\n');
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='KK_ChanNuoi_'+new Date().toISOString().slice(0,10)+'.csv';a.click();
 }
-
-/* ====== CÀI ĐẶT ====== */
 function loadCfg(){
-  E('cfg-url').value=cfg.url||'';
+  g('cfg-url').value=cfg.url||'';
   updateConn();
   const t=JSON.parse(localStorage.getItem('kkThon')||'[]');
-  if(t.length) E('cfg-thon').value=t.join('\n');
-  // QR mở CHÍNH TRANG kê khai (để người dân quét vào form), không phải link script
-  // Nếu đang mở file từ máy (file://) thì dùng link công khai để QR luôn đúng.
-  let pageUrl=location.href.split('#')[0];
-  if(location.protocol!=='http:'&&location.protocol!=='https:') pageUrl=PUBLIC_URL;
-  const qa=E('qr-area');qa.innerHTML='';
-  try{new QRCode(qa,{text:pageUrl,width:200,height:200,colorDark:'#0F6E56',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.H});}catch(e){}
-  E('qr-link').textContent=pageUrl;
+  if(t.length) g('cfg-thon').value=t.join('\n');
+  // QR
+  const qa=document.getElementById('qr-area');
+  qa.innerHTML='';
+  if(cfg.url){
+    try{new QRCode(qa,{text:cfg.url,width:200,height:200,colorDark:'#0F6E56',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.H});}catch(e){}
+  } else {qa.innerHTML='<div style="width:200px;height:200px;background:#eee;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#888;text-align:center;padding:20px">Nhập Script URL để tạo mã QR</div>';}
 }
-function saveCfg(){cfg.url=g('cfg-url')||DEFAULT_URL;localStorage.setItem('kkCfg',JSON.stringify(cfg));updateConn();loadCfg();syncPending();alert('Đã lưu!');}
-function updateConn(){const d=E('cdot'),t=E('ctxt');if(cfg.url){d.className='dot g';t.textContent='Đã cài đặt Google Sheets';}else{d.className='dot gray';t.textContent='Chưa kết nối Google Sheets';}}
-async function testCfg(){
-  const url=g('cfg-url');if(!url)return alert('Nhập URL trước');
-  const res=await jsonp(url);
-  if(res&&res.ok) alert('✅ Kết nối THÀNH CÔNG!\nHệ thống đang thấy '+(res.count||0)+' phiếu trên Google Sheets.');
-  else alert('❌ CHƯA kết nối được.\nKiểm tra:\n1) Đã dán code Apps Script MỚI (có doGet) chưa?\n2) Đã Triển khai Web App với quyền "Bất kỳ ai" chưa?\n3) URL có đúng và kết thúc bằng /exec không?');
-}
-function saveThon(){const lines=g('cfg-thon').split('\n').map(s=>s.trim()).filter(Boolean);localStorage.setItem('kkThon',JSON.stringify(lines));const opts=['<option value="">-- Chọn thôn --</option>',...lines.map(l=>`<option>${l}</option>`)].join('');['thon','s-thon'].forEach(id=>{const el=E(id);if(el){el.innerHTML=id==='s-thon'?'<option value="">Tất cả thôn</option>'+lines.map(l=>`<option>${l}</option>`).join(''):opts;}});alert('Đã cập nhật danh sách thôn!');}
-function copyScript(){
-  const s=`Vui lòng dùng file "apps_script_code.gs" được cung cấp kèm theo (đã có doPost + doGet).`;
-  if(navigator.clipboard){navigator.clipboard.writeText(s).then(()=>alert('ℹ️ Hãy mở file apps_script_code.gs đi kèm, copy toàn bộ và dán vào Apps Script.')).catch(()=>alert('Hãy mở file apps_script_code.gs đi kèm và dán vào Apps Script.'));}
-  else alert('Hãy mở file apps_script_code.gs đi kèm và dán vào Apps Script.');
-}
-function resetForm(){pg=1;animals={};document.querySelectorAll('input,select,textarea').forEach(el=>{if(el.type!=='button')el.value='';});document.querySelectorAll('.ac').forEach(c=>c.classList.remove('on'));document.querySelectorAll('.adet').forEach(d=>d.classList.remove('on'));E('form-main').style.display='block';E('form-ok').style.display='none';fillPeriods();E('ngay').value=new Date().toISOString().split('T')[0];render();}
+function saveCfg(){cfg.url=g('cfg-url');localStorage.setItem('kkCfg',JSON.stringify(cfg));updateConn();loadCfg();alert('Đã lưu!');}
+function updateConn(){const d=document.getElementById('cdot'),t=document.getElementById('ctxt');if(cfg.url){d.className='dot g';t.textContent='Đã cài đặt Google Sheets';}else{d.className='dot gray';t.textContent='Chưa kết nối Google Sheets';}}
+async function testCfg(){const url=g('cfg-url');if(!url)return alert('Nhập URL trước');try{await fetch(url+'?test=1',{mode:'no-cors'});alert('✅ Kết nối thành công!');}catch(e){alert('❌ Không kết nối được. Kiểm tra lại URL.');}}
+function saveThon(){const lines=g('cfg-thon').split('\n').map(s=>s.trim()).filter(Boolean);localStorage.setItem('kkThon',JSON.stringify(lines));const opts=['<option value="">-- Chọn thôn --</option>',...lines.map(l=>`<option>${l}</option>`)].join('');['thon','s-thon'].forEach(id=>{const el=document.getElementById(id);if(el){el.innerHTML=id==='s-thon'?'<option value="">Tất cả thôn</option>'+lines.map(l=>`<option>${l}</option>`).join(''):opts;}});alert('Đã cập nhật danh sách thôn!');}
+function copyScript(){const s=`function doPost(e){try{var ss=SpreadsheetApp.openById("THAY_SHEET_ID_CUA_BAN");var sh=ss.getSheetByName("KêKhai")||ss.insertSheet("KêKhai");if(sh.getLastRow()===0){sh.appendRow(["Mã phiếu","Kỳ KK","Ngày","Họ tên","CCCD","SĐT","Năm sinh","GT","Thôn","Số thửa","Mô tả vị trí","Vĩ độ","Kinh độ","Link Maps","Lợn","Gà","Vịt/Ngan","Trâu","Bò","Dê/Cừu","Vật nuôi tổng hợp","DT chuồng m2","Hình thức","Nguồn nước","Chất thải rắn","Chất thải nước","Vắc-xin","Loại vắc-xin","Dịch bệnh","Số bán","Số nhập","Ghi chú"]);}var d=JSON.parse(e.postData.contents);sh.appendRow([d.ma,d.ky,d.ngay,d.ten,d.cccd,d.sdt,d.ns,d.gt,d.thon,d.thua,d.dc,d.viDo,d.kinhDo,d.gpsLink,d.lon,d.ga,d.vit,d.trau,d.bo,d.de,d.vatNuoi,d.dienTich,d.ht,d.nn,d.ctRan,d.ctNuoc,d.vx,d.loaiVx,d.db,d.ban,d.nhap,d.ghichu]);return ContentService.createTextOutput(JSON.stringify({ok:true})).setMimeType(ContentService.MimeType.JSON);}catch(err){return ContentService.createTextOutput(JSON.stringify({ok:false,err:err.toString()})).setMimeType(ContentService.MimeType.JSON);}}`;navigator.clipboard.writeText(s).then(()=>alert('✅ Đã sao chép code! Dán vào Apps Script và thay THAY_SHEET_ID_CUA_BAN bằng ID thật.')).catch(()=>alert('Lỗi copy. Hãy copy thủ công.'));}
+function resetForm(){pg=1;animals={};document.querySelectorAll('input,select,textarea').forEach(el=>{if(el.type!=='button')el.value='';});document.querySelectorAll('.ac').forEach(c=>c.classList.remove('on'));document.querySelectorAll('.adet').forEach(d=>d.classList.remove('on'));document.getElementById('form-main').style.display='block';document.getElementById('form-ok').style.display='none';render();}
 
-/* ===== MAP & GPS ===== */
+// ===== MAP & GPS =====
 let mapLat=null,mapLng=null;
 function initMap(){
   const lat=mapLat||15.5489,lng=mapLng||108.1234;
-  E('map-placeholder').style.display='none';
-  E('map-frame').style.display='block';
-  E('gmap').src=`https://maps.google.com/maps?q=${lat},${lng}&z=15&output=embed`;
+  document.getElementById('map-placeholder').style.display='none';
+  document.getElementById('map-frame').style.display='block';
+  document.getElementById('gmap').src=`https://maps.google.com/maps?q=${lat},${lng}&z=15&output=embed`;
 }
 function getGPS(){
   if(!navigator.geolocation) return alert('Trình duyệt không hỗ trợ GPS. Hãy thử trên Chrome điện thoại.');
@@ -838,9 +712,9 @@ function getGPS(){
     pos=>{
       mapLat=pos.coords.latitude.toFixed(6);mapLng=pos.coords.longitude.toFixed(6);
       setCoords(mapLat,mapLng);
-      E('map-placeholder').style.display='none';
-      E('map-frame').style.display='block';
-      E('gmap').src=`https://maps.google.com/maps?q=${mapLat},${mapLng}&z=17&output=embed`;
+      document.getElementById('map-placeholder').style.display='none';
+      document.getElementById('map-frame').style.display='block';
+      document.getElementById('gmap').src=`https://maps.google.com/maps?q=${mapLat},${mapLng}&z=17&output=embed`;
       btn.textContent='✅ Đã lấy vị trí GPS';btn.disabled=false;
     },
     err=>{
@@ -852,25 +726,22 @@ function getGPS(){
   );
 }
 function setCoords(lat,lng){
-  E('lat').value=lat;E('lng').value=lng;
-  E('coord-box').style.display='block';
-  E('gmap-link').href=`https://www.google.com/maps?q=${lat},${lng}`;
-  E('coord-addr').textContent=`📍 Toạ độ GPS: ${lat}, ${lng}`;
+  document.getElementById('lat').value=lat;
+  document.getElementById('lng').value=lng;
+  document.getElementById('coord-box').style.display='block';
+  document.getElementById('gmap-link').href=`https://www.google.com/maps?q=${lat},${lng}`;
+  document.getElementById('coord-addr').textContent=`📍 Toạ độ GPS: ${lat}, ${lng}`;
 }
 function openGoogleMaps(){
   const lat=mapLat||15.5489,lng=mapLng||108.1234;
   window.open(`https://www.google.com/maps/search/Xã+Việt+An+Hiệp+Đức+Quảng+Nam/@${lat},${lng},14z`,'_blank');
   setTimeout(()=>alert('📋 Hướng dẫn lấy toạ độ:\n1. Tìm vị trí chuồng trại trên bản đồ\n2. Nhấn giữ vào vị trí đó (~2 giây)\n3. Toạ độ hiện ra ở thanh dưới — Copy\n4. Dán vào ô mô tả vị trí bên dưới\n\n(Ví dụ: 15.548726, 108.124531)'),600);
 }
-/* ===== END MAP ===== */
+// ===== END MAP =====
 
-/* ====== KHỞI ĐỘNG ====== */
-fillPeriods();
-if(location.hash==='#admin') unlockAdmin();
-E('ngay').value=new Date().toISOString().split('T')[0];
+// init date
+document.getElementById('ngay').value=new Date().toISOString().split('T')[0];
 render();
-updatePending();
-syncPending();   // Tự động gửi lại các phiếu đã nhập nhưng chưa lên hệ thống (cứu dữ liệu cũ)
 </script>
 </body>
 </html>
