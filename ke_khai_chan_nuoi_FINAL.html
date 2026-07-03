@@ -613,8 +613,8 @@ let pg=1, animals={}, recs=[];
 const TOTAL=5;
 const PGNAMES=['','Thông tin chủ hộ','Loại vật nuôi','Chuồng trại & chất thải','Phòng dịch & sản xuất','Xác nhận & nộp phiếu'];
 const ANAMES={lon:'Lợn',ga:'Gà',vit:'Vịt/Ngan',trau:'Trâu',bo:'Bò',de:'Dê/Cừu',tho:'Thỏ',khac:'Thủy sản/Khác'};
-let cfg=JSON.parse(localStorage.getItem('kkCfg')||'{"url":"https://script.google.com/macros/s/AKfycbzQ0XQzb-WZqUegpcnIGb8Sp-9vNP6ot7xaYfRK79bc1hJ_0VDBnBUPOmXNGa8QiuagRw/exec"}');
-if(!cfg.url){cfg.url='https://script.google.com/macros/s/AKfycbzQ0XQzb-WZqUegpcnIGb8Sp-9vNP6ot7xaYfRK79bc1hJ_0VDBnBUPOmXNGa8QiuagRw/exec';localStorage.setItem('kkCfg',JSON.stringify(cfg));}
+let cfg=JSON.parse(localStorage.getItem('kkCfg')||'{"url":"https://script.google.com/macros/s/AKfycbwA1Rv4szDxYSf9gB1dD9f7v2aSWpXlKcphmuGURUWW3atlaIKJcrYW3EFJAsR7kAXLmA/exec"}');
+if(!cfg.url||cfg.url.indexOf('AKfycbzQ0')!==-1){cfg.url='https://script.google.com/macros/s/AKfycbwA1Rv4szDxYSf9gB1dD9f7v2aSWpXlKcphmuGURUWW3atlaIKJcrYW3EFJAsR7kAXLmA/exec';localStorage.setItem('kkCfg',JSON.stringify(cfg));}
 recs=JSON.parse(localStorage.getItem('kkRecs')||'[]');
 
 const ADMIN_PW='79009675';
@@ -706,10 +706,10 @@ async function renderDash(){
   if(st)st.textContent='\u23f3 \u0110ang t\u1ea3i d\u1eef li\u1ec7u t\u1eeb Google Sheets...';
   try{
     const r=await fetch(cfg.url);
-    const rows=await r.json();
-    if(Array.isArray(rows)&&rows.length>1){
-      const KEYS=['ma','ky','ngay','ten','cccd','sdt','ns','gt','thon','thua','dc','viDo','kinhDo','gpsLink','lon','ga','vit','trau','bo','de','vatNuoi','dienTich','ht','nn','ctRan','ctNuoc','vx','loaiVx','db','ban','nhap','ghichu'];
-      allRecs=rows.slice(1).map(row=>{const o={};KEYS.forEach((k,i)=>o[k]=row[i]==null?'':String(row[i]));return o;});
+    const j=await r.json();
+    const arr=Array.isArray(j)?j:(j&&j.data)||[];
+    if(arr.length){
+      allRecs=arr.map(x=>{const o={};for(const k in x){o[k]=x[k]==null?'':String(x[k]);}if(o.ngay&&o.ngay.indexOf('T')!==-1)o.ngay=o.ngay.slice(0,10);return o;});
       if(st)st.textContent='\u2705 D\u1eef li\u1ec7u to\u00e0n x\u00e3 t\u1eeb Google Sheets: '+allRecs.length+' phi\u1ebfu';
     }else{
       if(st)st.textContent='\u2139\ufe0f Google Sheets ch\u01b0a c\u00f3 d\u1eef li\u1ec7u \u2014 hi\u1ec3n th\u1ecb d\u1eef li\u1ec7u tr\u00ean m\u00e1y n\u00e0y.';
