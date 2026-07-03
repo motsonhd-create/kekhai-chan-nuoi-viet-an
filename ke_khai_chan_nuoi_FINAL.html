@@ -2,8 +2,20 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>Kê Khai Chăn Nuôi — Điều 54 Luật Chăn nuôi 2018</title>
+
+  <!-- PWA Meta Tags -->
+  <meta name="application-name" content="KK Chăn Nuôi Việt An">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="KK Chăn Nuôi">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#0F6E56">
+  <meta name="msapplication-TileColor" content="#0F6E56">
+  <link rel="manifest" href="manifest.json">
+  <!-- Apple Touch Icon (inline SVG base64) -->
+  <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxMDAgMTAwJz48cmVjdCB3aWR0aD0nMTAwJyBoZWlnaHQ9JzEwMCcgcng9JzE2JyBmaWxsPScjMEY2RTU2Jy8+PHRleHQgeT0nNjUnIHg9JzUwJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmb250LXNpemU9JzYwJz7wn4y+PC90ZXh0Pjwvc3ZnPg==">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Kê Khai Chăn Nuôi — Xã Việt An</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -98,11 +110,22 @@ code{font-size:12px;background:var(--bg);border:1px solid var(--b);padding:2px 6
 </style>
 </head>
 <body>
+
+<!-- Banner cài đặt PWA -->
+<div id="install-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#0F6E56;color:#fff;padding:12px 16px;z-index:9999;align-items:center;gap:12px;box-shadow:0 -2px 12px rgba(0,0,0,0.3)">
+  <div style="font-size:22px">🌾</div>
+  <div style="flex:1">
+    <div style="font-size:14px;font-weight:700">Cài đặt App Kê Khai Chăn Nuôi</div>
+    <div style="font-size:12px;opacity:0.85">Thêm vào màn hình chính để dùng nhanh hơn</div>
+  </div>
+  <button onclick="installApp()" style="background:#FFD700;color:#0A3D22;border:none;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap">📲 Cài ngay</button>
+  <button onclick="document.getElementById('install-banner').style.display='none'" style="background:rgba(255,255,255,0.2);color:#fff;border:none;width:28px;height:28px;border-radius:50%;font-size:16px;cursor:pointer;flex-shrink:0">✕</button>
+</div>
 <nav class="nav">
-  <div class="nav-brand">🌾 KK Chăn Nuôi</div>
+  <div class="nav-brand" onclick="adminLogin()" style="cursor:pointer">🌾 KK Chăn Nuôi</div>
   <div class="nav-tab on" onclick="V('form',this)">📝 Kê khai</div>
-  <div class="nav-tab" onclick="V('dash',this)">📊 Tổng hợp</div>
-  <div class="nav-tab" onclick="V('setup',this)">⚙️ Cài đặt</div>
+  <div class="nav-tab" id="tab-dash" style="display:none" onclick="V('dash',this)">📊 Tổng hợp</div>
+  <div class="nav-tab" id="tab-setup" style="display:none" onclick="V('setup',this)">⚙️ Cài đặt</div>
 </nav>
 
 <!-- ====== FORM ====== -->
@@ -233,17 +256,17 @@ code{font-size:12px;background:var(--bg);border:1px solid var(--b);padding:2px 6
       </div>
     </div>
 
-    <!-- PAGE 2: Loại vật nuôi -->
+    <!-- PAGE 2: Loại vật nuôi theo Thông tư 23 -->
     <div class="pg" id="p2">
       <div class="info-box">
-        ℹ️ <strong>Tất cả hộ chăn nuôi đều kê khai — dù chỉ nuôi 1 con.</strong> Việc kê khai đầy đủ giúp xã phòng chống dịch bệnh và là căn cứ hỗ trợ thiệt hại khi có dịch, thiên tai. Nhấn vào ô để chọn và nhập số lượng.
+        ✅ Tất cả hộ chăn nuôi đều phải kê khai, kể cả nuôi 1 con. Nhấn vào ô để chọn và nhập số lượng.
       </div>
       <div class="card">
         <div class="card-head">🐾 Loại vật nuôi &amp; số lượng <span class="req">*</span></div>
         <div class="animal-grid">
           <div class="ac" id="ac-lon" onclick="tog('lon',this)">
             <span class="em">🐷</span><div class="nm">Lợn</div>
-            <div class="min">Kê khai từ 1 con trở lên</div>
+            <div class="min">Lợn thịt, lợn nái, lợn đực giống</div>
             <div class="adet" id="ad-lon">
               <div class="cnt"><label>Tổng số con:</label><input type="number" id="n-lon" min="0" placeholder="0" inputmode="numeric" onclick="ev(event)"></div>
               <div class="cnt"><label>Trong đó lợn nái:</label><input type="number" id="nai-lon" min="0" placeholder="0" inputmode="numeric" onclick="ev(event)"></div>
@@ -260,7 +283,7 @@ code{font-size:12px;background:var(--bg);border:1px solid var(--b);padding:2px 6
           </div>
           <div class="ac" id="ac-ga" onclick="tog('ga',this)">
             <span class="em">🐓</span><div class="nm">Gà</div>
-            <div class="min">Kê khai từ 1 con trở lên</div>
+            <div class="min">Gà, vịt, ngan, ngỗng...</div>
             <div class="adet" id="ad-ga">
               <div class="cnt"><label>Tổng số con:</label><input type="number" id="n-ga" min="0" placeholder="0" inputmode="numeric" onclick="ev(event)"></div>
               <div class="cnt"><label>Gà mái đẻ:</label><input type="number" id="mai-ga" min="0" placeholder="0" inputmode="numeric" onclick="ev(event)"></div>
@@ -275,7 +298,7 @@ code{font-size:12px;background:var(--bg);border:1px solid var(--b);padding:2px 6
           </div>
           <div class="ac" id="ac-vit" onclick="tog('vit',this)">
             <span class="em">🦆</span><div class="nm">Vịt / Ngan / Ngỗng</div>
-            <div class="min">Kê khai từ 1 con trở lên</div>
+            <div class="min">Gà, vịt, ngan, ngỗng...</div>
             <div class="adet" id="ad-vit">
               <div class="cnt"><label>Tổng số con:</label><input type="number" id="n-vit" min="0" placeholder="0" inputmode="numeric" onclick="ev(event)"></div>
               <div class="cnt"><label>Vịt mái đẻ:</label><input type="number" id="mai-vit" min="0" placeholder="0" inputmode="numeric" onclick="ev(event)"></div>
@@ -283,7 +306,7 @@ code{font-size:12px;background:var(--bg);border:1px solid var(--b);padding:2px 6
           </div>
           <div class="ac" id="ac-trau" onclick="tog('trau',this)">
             <span class="em">🐃</span><div class="nm">Trâu</div>
-            <div class="min">Kê khai từ 1 con trở lên</div>
+            <div class="min">Trâu, bò, dê, cừu...</div>
             <div class="adet" id="ad-trau">
               <div class="cnt"><label>Tổng số con:</label><input type="number" id="n-trau" min="0" placeholder="0" inputmode="numeric" onclick="ev(event)"></div>
               <div class="cnt"><label>Trâu cái sinh sản:</label><input type="number" id="cai-trau" min="0" placeholder="0" inputmode="numeric" onclick="ev(event)"></div>
@@ -291,7 +314,7 @@ code{font-size:12px;background:var(--bg);border:1px solid var(--b);padding:2px 6
           </div>
           <div class="ac" id="ac-bo" onclick="tog('bo',this)">
             <span class="em">🐄</span><div class="nm">Bò</div>
-            <div class="min">Kê khai từ 1 con trở lên</div>
+            <div class="min">Trâu, bò, dê, cừu...</div>
             <div class="adet" id="ad-bo">
               <div class="cnt"><label>Tổng số con:</label><input type="number" id="n-bo" min="0" placeholder="0" inputmode="numeric" onclick="ev(event)"></div>
               <div class="cnt"><label>Bò cái sinh sản:</label><input type="number" id="cai-bo" min="0" placeholder="0" inputmode="numeric" onclick="ev(event)"></div>
@@ -304,7 +327,7 @@ code{font-size:12px;background:var(--bg);border:1px solid var(--b);padding:2px 6
           </div>
           <div class="ac" id="ac-de" onclick="tog('de',this)">
             <span class="em">🐐</span><div class="nm">Dê / Cừu</div>
-            <div class="min">Kê khai từ 1 con trở lên</div>
+            <div class="min">Trâu, bò, dê, cừu...</div>
             <div class="adet" id="ad-de">
               <div class="cnt"><label>Tổng số con:</label><input type="number" id="n-de" min="0" placeholder="0" inputmode="numeric" onclick="ev(event)"></div>
               <div class="cnt"><label>Dê cái sinh sản:</label><input type="number" id="cai-de" min="0" placeholder="0" inputmode="numeric" onclick="ev(event)"></div>
@@ -312,14 +335,14 @@ code{font-size:12px;background:var(--bg);border:1px solid var(--b);padding:2px 6
           </div>
           <div class="ac" id="ac-tho" onclick="tog('tho',this)">
             <span class="em">🐇</span><div class="nm">Thỏ</div>
-            <div class="min">Kê khai từ 1 con trở lên</div>
+            <div class="min">Thỏ các loại</div>
             <div class="adet" id="ad-tho">
               <div class="cnt"><label>Tổng số con:</label><input type="number" id="n-tho" min="0" placeholder="0" inputmode="numeric" onclick="ev(event)"></div>
             </div>
           </div>
           <div class="ac" id="ac-khac" onclick="tog('khac',this)">
             <span class="em">🐟</span><div class="nm">Thủy sản / Khác</div>
-            <div class="min">Kê khai mọi số lượng</div>
+            <div class="min">Vật nuôi khác theo quy định</div>
             <div class="adet" id="ad-khac">
               <div class="f" style="margin:0"><label style="font-size:12px;color:var(--t3)">Ghi rõ loại:</label>
                 <input type="text" id="loai-khac" placeholder="VD: Cá trê, Ếch, Hươu..." onclick="ev(event)">
@@ -437,7 +460,7 @@ code{font-size:12px;background:var(--bg);border:1px solid var(--b);padding:2px 6
         <div class="card-head">✅ Xác nhận thông tin kê khai</div>
         <div id="sum-content"></div>
         <div class="info-box" style="margin-top:14px">
-          Tôi cam kết thông tin kê khai trên là <strong>đúng sự thật</strong>. Nếu gian dối trong kê khai nhằm trục lợi, tôi chịu trách nhiệm theo <strong>Điều 12 khoản 13 Luật Chăn nuôi 2018</strong>.
+          Tôi cam kết thông tin kê khai trên là <strong>đúng sự thật</strong>. Mọi hộ nuôi từ 1 con trở lên đều có trách nhiệm kê khai theo quy định của UBND xã Việt An.
         </div>
       </div>
     </div>
@@ -469,6 +492,7 @@ code{font-size:12px;background:var(--bg);border:1px solid var(--b);padding:2px 6
 
 <!-- ====== DASHBOARD ====== -->
 <div class="view" id="view-dash">
+  <div id="dash-status" style="font-size:12px;color:var(--t3);margin:0 2px 8px"></div>
   <div class="stat-grid">
     <div class="stat accent"><div class="val" id="d-ho">0</div><div class="lbl">Hộ đã kê khai</div></div>
     <div class="stat"><div class="val" id="d-lon">0</div><div class="lbl">Con lợn</div></div>
@@ -590,9 +614,26 @@ const TOTAL=5;
 const PGNAMES=['','Thông tin chủ hộ','Loại vật nuôi','Chuồng trại & chất thải','Phòng dịch & sản xuất','Xác nhận & nộp phiếu'];
 const ANAMES={lon:'Lợn',ga:'Gà',vit:'Vịt/Ngan',trau:'Trâu',bo:'Bò',de:'Dê/Cừu',tho:'Thỏ',khac:'Thủy sản/Khác'};
 let cfg=JSON.parse(localStorage.getItem('kkCfg')||'{"url":"https://script.google.com/macros/s/AKfycbzQ0XQzb-WZqUegpcnIGb8Sp-9vNP6ot7xaYfRK79bc1hJ_0VDBnBUPOmXNGa8QiuagRw/exec"}');
+if(!cfg.url){cfg.url='https://script.google.com/macros/s/AKfycbzQ0XQzb-WZqUegpcnIGb8Sp-9vNP6ot7xaYfRK79bc1hJ_0VDBnBUPOmXNGa8QiuagRw/exec';localStorage.setItem('kkCfg',JSON.stringify(cfg));}
 recs=JSON.parse(localStorage.getItem('kkRecs')||'[]');
 
+const ADMIN_PW='79009675';
+let adminOK=sessionStorage.getItem('kkAdmin')==='1';
+function showAdminTabs(){document.getElementById('tab-dash').style.display='block';document.getElementById('tab-setup').style.display='block';}
+function adminLogin(){
+  if(adminOK){showAdminTabs();return;}
+  const p=prompt('\ud83d\udd12 Khu v\u1ef1c qu\u1ea3n tr\u1ecb c\u1ee7a x\u00e3.\nVui l\u00f2ng nh\u1eadp m\u1eadt kh\u1ea9u:');
+  if(p===null) return;
+  if(p!==ADMIN_PW){alert('\u274c Sai m\u1eadt kh\u1ea9u!');return;}
+  adminOK=true;sessionStorage.setItem('kkAdmin','1');showAdminTabs();
+}
 function V(id,el){
+  if((id==='dash'||id==='setup')&&!adminOK){
+    const p=prompt('\ud83d\udd12 Khu v\u1ef1c qu\u1ea3n tr\u1ecb c\u1ee7a x\u00e3.\nVui l\u00f2ng nh\u1eadp m\u1eadt kh\u1ea9u:');
+    if(p===null) return;
+    if(p!==ADMIN_PW){alert('\u274c Sai m\u1eadt kh\u1ea9u! Li\u00ean h\u1ec7 Ph\u00f2ng Kinh t\u1ebf x\u00e3 n\u1ebfu b\u1ea1n l\u00e0 c\u00e1n b\u1ed9 qu\u1ea3n l\u00fd.');return;}
+    adminOK=true;sessionStorage.setItem('kkAdmin','1');
+  }
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('on'));
   document.getElementById('view-'+id).classList.add('on');
@@ -618,7 +659,7 @@ function render(){
 }
 function validate(p){
   if(p===1){if(!g('ky')) return alert('Vui lòng chọn kỳ kê khai'),false;if(!g('ten')) return alert('Vui lòng nhập họ tên chủ hộ'),false;if(!g('cccd')) return alert('Vui lòng nhập CCCD/CMND'),false;if(!g('thon')) return alert('Vui lòng chọn thôn/xóm'),false;}
-  if(p===2&&Object.keys(animals).length===0) return alert('Vui lòng chọn ít nhất một loại vật nuôi'),false;
+  if(p===2&&Object.keys(animals).length===0) return alert('Vui lòng chọn ít nhất một loại vật nuôi đang nuôi'),false;
   if(p===3&&!g('dien_tich')) return alert('Vui lòng nhập diện tích chuồng trại'),false;
   return true;
 }
@@ -657,24 +698,45 @@ async function submit(){
     catch(e){document.getElementById('send-status').textContent='⚠️ Đã lưu cục bộ (kiểm tra mạng)';}
   } else {document.getElementById('send-status').textContent='💾 Lưu cục bộ — chưa cài đặt Google Sheets';}
 }
-function renderDash(){
-  g('d-ho').textContent=recs.length;
-  g('d-lon').textContent=recs.reduce((s,r)=>s+(+r.lon||0),0).toLocaleString();
-  g('d-ga').textContent=recs.reduce((s,r)=>s+(+r.ga||0)+(+r.vit||0),0).toLocaleString();
-  g('d-bo').textContent=recs.reduce((s,r)=>s+(+r.trau||0)+(+r.bo||0),0).toLocaleString();
+let allRecs=recs;
+async function renderDash(){
+  drawDash();
+  const st=document.getElementById('dash-status');
+  if(!cfg.url){if(st)st.textContent='\ud83d\udcbe D\u1eef li\u1ec7u tr\u00ean m\u00e1y n\u00e0y (ch\u01b0a c\u00e0i Google Sheets)';return;}
+  if(st)st.textContent='\u23f3 \u0110ang t\u1ea3i d\u1eef li\u1ec7u t\u1eeb Google Sheets...';
+  try{
+    const r=await fetch(cfg.url);
+    const rows=await r.json();
+    if(Array.isArray(rows)&&rows.length>1){
+      const KEYS=['ma','ky','ngay','ten','cccd','sdt','ns','gt','thon','thua','dc','viDo','kinhDo','gpsLink','lon','ga','vit','trau','bo','de','vatNuoi','dienTich','ht','nn','ctRan','ctNuoc','vx','loaiVx','db','ban','nhap','ghichu'];
+      allRecs=rows.slice(1).map(row=>{const o={};KEYS.forEach((k,i)=>o[k]=row[i]==null?'':String(row[i]));return o;});
+      if(st)st.textContent='\u2705 D\u1eef li\u1ec7u to\u00e0n x\u00e3 t\u1eeb Google Sheets: '+allRecs.length+' phi\u1ebfu';
+    }else{
+      if(st)st.textContent='\u2139\ufe0f Google Sheets ch\u01b0a c\u00f3 d\u1eef li\u1ec7u \u2014 hi\u1ec3n th\u1ecb d\u1eef li\u1ec7u tr\u00ean m\u00e1y n\u00e0y.';
+    }
+  }catch(e){
+    if(st)st.textContent='\u26a0\ufe0f Kh\u00f4ng t\u1ea3i \u0111\u01b0\u1ee3c t\u1eeb Google Sheets (Apps Script ch\u01b0a c\u00f3 h\u00e0m doGet ho\u1eb7c m\u1ea5t m\u1ea1ng) \u2014 \u0111ang hi\u1ec3n th\u1ecb d\u1eef li\u1ec7u tr\u00ean m\u00e1y n\u00e0y.';
+  }
+  drawDash();
+}
+function drawDash(){
+  g('d-ho').textContent=allRecs.length;
+  g('d-lon').textContent=allRecs.reduce((s,r)=>s+(+r.lon||0),0).toLocaleString();
+  g('d-ga').textContent=allRecs.reduce((s,r)=>s+(+r.ga||0)+(+r.vit||0),0).toLocaleString();
+  g('d-bo').textContent=allRecs.reduce((s,r)=>s+(+r.trau||0)+(+r.bo||0),0).toLocaleString();
   renderT();
 }
 function renderT(){
   const q=g('s-q').toLowerCase(),thon=g('s-thon'),ky=g('s-ky');
-  const f=recs.filter(r=>(!q||r.ten.toLowerCase().includes(q)||r.cccd.includes(q)||r.ma.includes(q))&&(!thon||r.thon===thon)&&(!ky||r.ky===ky));
+  const f=allRecs.filter(r=>(!q||(r.ten||'').toLowerCase().includes(q)||(r.cccd||'').includes(q)||(r.ma||'').includes(q))&&(!thon||r.thon===thon)&&(!ky||r.ky===ky));
   document.getElementById('tbl-empty').style.display=f.length?'none':'block';
   document.getElementById('tbl').innerHTML=f.map(r=>`<tr><td><strong>${r.ten}</strong><br><span style="font-size:11px;color:var(--t3)">${r.cccd}</span></td><td>${r.thon}</td><td style="font-size:12px">${r.ky}</td><td style="font-size:12px;max-width:140px">${r.vatNuoi||'—'}</td><td><span class="badge">${r.ma}</span></td></tr>`).join('');
 }
 function exportCSV(){
-  if(!recs.length) return alert('Chưa có dữ liệu');
+  if(!allRecs.length) return alert('Chưa có dữ liệu');
   const h=['Mã phiếu','Kỳ KK','Ngày KK','Họ tên','CCCD','SĐT','Năm sinh','Giới tính','Thôn','Số thửa','Mô tả vị trí','Vĩ độ (Lat)','Kinh độ (Lng)','Link Google Maps','Lợn (con)','Gà (con)','Vịt/Ngan','Trâu','Bò','Dê/Cừu','Vật nuôi tổng hợp','Diện tích chuồng (m²)','Hình thức','Nguồn nước','Chất thải rắn','Chất thải nước','Vắc-xin','Loại vắc-xin','Dịch bệnh','Số bán','Số nhập','Ghi chú'];
-  const rows=recs.map(r=>[r.ma,r.ky,r.ngay,r.ten,r.cccd,r.sdt,r.ns,r.gt,r.thon,r.thua,r.dc,r.viDo||'',r.kinhDo||'',r.gpsLink||'',r.lon,r.ga,r.vit,r.trau,r.bo,r.de,r.vatNuoi,r.dienTich,r.ht,r.nn,r.ctRan,r.ctNuoc,r.vx,r.loaiVx,r.db,r.ban,r.nhap,r.ghichu].map(c=>`"${(c||'').replace(/"/g,'""')}"`))
-  const csv='﻿'+[h,...rows].map(r=>r.join(',')).join('\n');
+  const rows=allRecs.map(r=>[r.ma,r.ky,r.ngay,r.ten,r.cccd,r.sdt,r.ns,r.gt,r.thon,r.thua,r.dc,r.viDo||'',r.kinhDo||'',r.gpsLink||'',r.lon,r.ga,r.vit,r.trau,r.bo,r.de,r.vatNuoi,r.dienTich,r.ht,r.nn,r.ctRan,r.ctNuoc,r.vx,r.loaiVx,r.db,r.ban,r.nhap,r.ghichu].map(c=>`"${(c||'').replace(/"/g,'""')}"`))
+  const csv='\uFEFF'+[h,...rows].map(r=>r.join(',')).join('\n');
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));a.download='KK_ChanNuoi_'+new Date().toISOString().slice(0,10)+'.csv';a.click();
 }
 function loadCfg(){
@@ -742,6 +804,45 @@ function openGoogleMaps(){
 // init date
 document.getElementById('ngay').value=new Date().toISOString().split('T')[0];
 render();
+</script>
+
+<script>
+// Đăng ký Service Worker (PWA)
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => console.log('SW đã đăng ký:', reg.scope))
+      .catch(err => console.log('SW lỗi:', err));
+  });
+}
+
+// Nút "Cài đặt App" - hiện khi có thể cài
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  // Hiện banner cài đặt
+  const banner = document.getElementById('install-banner');
+  if (banner) banner.style.display = 'flex';
+});
+
+function installApp() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(result => {
+      if (result.outcome === 'accepted') {
+        document.getElementById('install-banner').style.display = 'none';
+      }
+      deferredPrompt = null;
+    });
+  }
+}
+
+window.addEventListener('appinstalled', () => {
+  const banner = document.getElementById('install-banner');
+  if (banner) banner.style.display = 'none';
+  console.log('App đã được cài đặt!');
+});
 </script>
 </body>
 </html>
